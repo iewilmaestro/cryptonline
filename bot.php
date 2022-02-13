@@ -22,15 +22,14 @@ function Head2(){$ua=Save('User_Agent');$h=["Host: api-secure.solvemedia.com","u
 function Gsolv($url,$ref){$arr=["accept: */*","referer: ".$ref,"accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"];$r=Run($url,array_merge(Head2(),$arr));$ca=explode('"',$r)[5];return $ca;}
 function Gmed($ca,$ref){$url="https://api-secure.solvemedia.com/papi/media?c=".$ca.";w=300;h=150;fg=000000;bg=f8f8f8";$arr=["accept: image/webp,image/apng,image/*,*/*;q=0.8","referer: ".$ref,"accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"];$r=Run($url,array_merge(Head2(),$arr));return $r;}
 function Build($a){return http_build_query($a);}
+
 function head(){$user=Save("User_Agent");$cookie=Save("Cookie");return ["user-agent: ".$user,"cookie: ".$cookie];}
 function host(){return "https://cryptonline.co.in";}
 function gptc(){$url = host()."/ptc";return Run($url,head());}
 function gview($id){$url = host()."/ptc/view/".$id;return Run($url,head());}
 function pview($id,$csrf,$token,$cap,$ca){$url = host()."/ptc/verify/".$id;$data = ["captcha"=>"solvemedia","adcopy_response"=>$cap,"adcopy_challenge"=>$ca,"g-recaptcha-response"=>"","h-captcha-response"=>"","csrf_token_name"=>$csrf,"token"=>$token];return Run($url,head(),build($data));}
 function gfaucet(){$url = host()."/faucet";return Run($url,head());}
-function pfaucet($csrf,$token,$cap){$url = host()."/faucet/verify";
-	$data = ["csrf_token_name"=>$csrf,"token"=>$token,"captcha"=>"recaptchav2","g-recaptcha-response"=>$cap];
-	return Run($url,head(),build($data));}
+function pfaucet($csrf,$token,$bot,$ca,$cap){$url = host()."/faucet/verify";$data = "antibotlinks=".$bot."&".build(["csrf_token_name"=>$csrf,"token"=>$token,"captcha"=>"solvemedia","adcopy_response"=>$cap,"adcopy_challenge"=>$ca,"g-recaptcha-response"=>"","h-captcha-response"=>""]);return Run($url,head(),$data);}
 function gfirewall(){$url = host()."/firewall";return Run($url,head());}
 function pfirewall($data){$url = host()."/firewall/verify";return Run($url,head(),build($data));}
 function gauto(){$url = host()."/auto";return Run($url,head());}
@@ -39,9 +38,9 @@ function gwithdraw(){$url = host()."/dashboard";return Run($url,head());}
 function pwithdraw($csrf,$metod,$amm,$em){$url = host()."/dashboard/withdraw";$data= ["csrf_token_name"=>$csrf,"method"=>$metod,"amount"=>$amm,"wallet"=>$em];return Run($url,head(),build($data));}
 function gaciv(){$url = host()."/achievements";return Run($url,head());}
 function paciv($csrf,$id){$url = host()."/achievements/claim/".$id;$data = ["csrf_token_name"=>$csrf];return Run($url,head(),build($data));}
-Short();
-cookie:
-bn();
+
+Short();cookie:bn();
+
 Save('Cookie');Save('User_Agent');
 $em = Save('Withdraw_Wallet');
 system("termux-open-url ".$a[3]);
@@ -63,6 +62,7 @@ echo col("5 >","m")." Withdraw\n";
 echo col("6 >","m")." Update Cookie\n";
 $pil=readline(col("Input Number ","h").col("> ","m"));
 line();
+
 if($pil==1){goto faucet;
 }elseif($pil==2){goto ptc;
 }elseif($pil==3){goto auto;
@@ -99,13 +99,15 @@ while(true){
 			if($tmr){tmr($tmr);}
 			
 			$ca = Gsolv("https://api-secure.solvemedia.com/papi/_challenge.js?k=5-oqQ1k7GChElaTzxRuCU4z-U5JBvnq6;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=standard;c=js,h5c,h5ct,svg,h5v,v/h264,v/ogg,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome98,os/nt,os/nt10.0,fwv/Bn0QJg.asnr71,htmlplus;am=7yM.r9qy0ZTpXi1k2rLRlA;ca=script;ts=1644721219;ct=1644721838;th=white;r=0.825741748320445",host());
-			file_put_contents("img.png",Gmed($ca,host()));
+			file_put_contents("ptc.png",Gmed($ca,host()));
 			if($pol == 1){
-				system("termux-open img.png");
+				system("termux-open ptc.png");
 				$cap = readline(col('Input Captcha ','h').col('> ','m'));
 			}else{
-				$cap = Ocr("img.png","im.png");
+				$cap = Ocr("ptc.png","pt.png");
 			}
+			if(file_exists("ptc.png")){unlink("ptc.png");}
+			if(file_exists("pt.png")){unlink("pt.png");}
 			
 			$r4 = pview($id,$csrf,$token,$cap,$ca);
 			$ss = explode("has",explode("Swal.fire('Good job!', '",$r4)[1])[0];
@@ -134,6 +136,7 @@ while(true){
 		goto menu;
 	}
 }
+
 faucet:
 while(true){
 	$r1 = gfaucet();
@@ -145,10 +148,10 @@ while(true){
 		$csrf = explode('"',explode('name="csrf_token_name" value="',$r2)[1])[0];
 		echo "\r                              \r";
 		if($tipe=="solvemedia"){
-			$ref = host()."/firewall";
-			$ca = Gsolv("https://api-secure.solvemedia.com/papi/_challenge.js?k=j2OzNTnKafklcpmyoVVoTwq9HT9s2jmh;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=standard;c=js,h5c,h5ct,svg,h5v,v/64,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome80,os/android,os/android9,fwv/BY3SoQ.sdah34,htmlplus;am=KWKyeRoME4As729PGgwTgA;ca=script;ts=1643689668;ct=1643690323;th=white;r=0.49505334341653584",$ref);
-			file_put_contents("img.png",Gmed($ca,$ref));
+			$ca = Gsolv("https://api-secure.solvemedia.com/papi/_challenge.js?k=5-oqQ1k7GChElaTzxRuCU4z-U5JBvnq6;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=standard;c=js,h5c,h5ct,svg,h5v,v/h264,v/ogg,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome98,os/nt,os/nt10.0,fwv/Bn0QJg.dhaq17,htmlplus;am=7yM.r9qy0ZTpXi1k2rLRlA;ca=script;ts=1644721219;ct=1644721838;th=white;r=0.5954064343257985",host());
+			file_put_contents("img.png",Gmed($ca,host()));
 			$respon = Ocr("img.png","im.png");
+			if(file_exists("img.png")){unlink("img.png");}
 			$data = ["adcopy_response"=>$respon,"adcopy_challenge"=>$ca,"captchaType"=>"solvemedia","csrf_token_name"=>$csrf];
 		}elseif($tipe=="recaptchav2"){
 			goto faucet;
@@ -163,7 +166,7 @@ while(true){
 		}
 		$r3=pfirewall($data);
 		if(dash()["balance"] == ""){}else{
-			echo col("Firewall   ~> ","m").col($tipe,"p").col(" Success","h");
+			echo col("Firewall ~> ","m").col($tipe,"p").col(" Success","h");
 			echo "\n";
 		}
 		goto faucet;
@@ -174,10 +177,19 @@ while(true){
 		$token = explode('">',explode('name="token" value="',$r1)[1])[0];
 		$tmr = explode(';',explode('var wait = ',$r1)[1])[0];
 		if($tmr){tmr($tmr);goto faucet;}
-		
+		$b = explode('rel=\"',$r1);
+		$b1 = explode('\">',$b[1])[0];
+		$b2 = explode('\">',$b[2])[0];
+		$b3 = explode('\">',$b[3])[0];
+		$bot = "+".$b1."+".$b2."+".$b3;
+		$ca = Gsolv("https://api-secure.solvemedia.com/papi/_challenge.js?k=5-oqQ1k7GChElaTzxRuCU4z-U5JBvnq6;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=standard;c=js,h5c,h5ct,svg,h5v,v/h264,v/ogg,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome98,os/nt,os/nt10.0,fwv/Bn0QJg.ywke2,htmlplus;am=7yM.r9qy0ZTpXi1k2rLRlA;ca=script;ts=1644721219;ct=1644721838;th=white;r=0.40659335431502686",host());
+		file_put_contents("fct.png",Gmed($ca,host()));
+		$cap = Ocr("fct.png","fc.png");
+
+		if(file_exists("fct.png")){unlink("fct.png");}
 		//$cap = RecaptchaV2(host()."/faucet/verify",$sitekey,$apikey);
 		
-		$r2 = pfaucet($csrf,$token,$cap);
+		$r2 = pfaucet($csrf,$token,$bot,$ca,$cap);
 		$ss = explode("has",explode("Swal.fire('Good job!', '",$r2)[1])[0];
 		if($ss){
 			echo col("Success    ~> ","h").col($ss,"k")."\n";
@@ -193,6 +205,7 @@ while(true){
 		goto menu;
 	}
 }
+
 auto:
 while(true){
 	$r1=gauto();
@@ -214,6 +227,7 @@ while(true){
 		line();
 	}
 }
+
 aciv:
 $r1=gaciv();
 $csrf=explode('"',explode('_token_name" value="',$r1)[1])[0];

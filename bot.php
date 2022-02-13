@@ -9,7 +9,7 @@ $disable = col("Script mati karena web update / scam!","m")."\nSupport Channel s
 function Run($url, $httpheader = 0, $post = 0, $proxy = 0){$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);curl_setopt($ch, CURLOPT_COOKIE,TRUE);
 	//curl_setopt($ch, CURLOPT_COOKIEFILE,"cookie.txt");curl_setopt($ch, CURLOPT_COOKIEJAR,"cookie.txt");
 	if($post){curl_setopt($ch, CURLOPT_POST, true);curl_setopt($ch, CURLOPT_POSTFIELDS, $post);}if($httpheader){curl_setopt($ch, CURLOPT_HTTPHEADER, $httpheader);}if($proxy){curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);curl_setopt($ch, CURLOPT_PROXY, $proxy);}curl_setopt($ch, CURLOPT_HEADER, true);$response = curl_exec($ch);$httpcode = curl_getinfo($ch);if(!$httpcode) return "Curl Error : ".curl_error($ch); else{$header = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));$body = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));curl_close($ch);return array($header, $body)[1];}}
-function Short(){global $a,$server,$disable;$script = file_get_contents($server);$status = explode('|',explode('#'.$a[1].':',$script)[1])[0];if($status == "on"){RETRY:$pass = "PERTAMA";$read = file_get_contents("key.txt");if($read == $pass){}else{bn();$l1 = col(" it takes only 1 time password to \n use the script","h")."\n";$l2 = col(" get the password in this video ","h")."\n";$l3 = col(" Link : ".$a[3],"m")."\n";echo Slow($l1.$l2.$l3);$p = readline(col(" Password : ","h"));$px = trim(strtoupper($p));if($pass == $px){file_put_contents("key.txt",$px);}else{echo col(" Password salah!","m")."\n";line();goto RETRY;}}}elseif($status == "off" or $status == null){echo col("The script is disabled","m")."\n\n";echo Slow($disable);exit;}}	
+function Short(){global $a,$server,$disable;$script = file_get_contents($server);$status = explode('|',explode('#'.$a[1].':',$script)[1])[0];if($status == "on"){RETRY:$pass = "PERTAMA";$read = file_get_contents("key.txt");if($read == $pass){}else{bn();$l1 = col(" it takes only 1 time password to \n use the script","h")."\n";$l2 = col(" get the password in this video ","h")."\n\n";$l3 = col(" Link : ".$a[3],"m")."\n\n";echo Slow($l1.$l2.$l3);$p = readline(col(" Password : ","h"));$px = trim(strtoupper($p));if($pass == $px){file_put_contents("key.txt",$px);}else{echo col(" Password salah!","m")."\n";line();goto RETRY;}}}elseif($status == "off" or $status == null){echo col("The script is disabled","m")."\n\n";echo Slow($disable);exit;}}	
 function Save($namadata){if(file_exists($namadata)){$datauser=file_get_contents($namadata);}else{$datauser=readline("Input ".$namadata." > ");echo "\n";file_put_contents($namadata,$datauser);}return $datauser;}
 function Col($str,$color){if($color=="rand"){$color=['h','k','b','u','m'][array_rand(['h','k','b','u','m'])];}$war=array('rw'=>"\033[107m\033[1;31m",'rt'=>"\033[106m\033[1;31m",'ht'=>"\033[0;30m",'p'=>"\033[1;37m",'a'=>"\033[1;30m",'m'=>"\033[1;31m",'h'=>"\033[1;32m",'k'=>"\033[1;33m",'b'=>"\033[1;34m",'u'=>"\033[1;35m",'c'=>"\033[1;36m",'rr'=>"\033[101m\033[1;37m",'rg'=>"\033[102m\033[1;34m",'ry'=>"\033[103m\033[1;30m",'rp1'=>"\033[104m\033[1;37m",'rp2'=>"\033[105m\033[1;37m");return $war[$color].$str."\033[0m";}
 function Slow($msg){$slow = str_split($msg);foreach( $slow as $slowmo ){echo $slowmo; usleep(70000);}}
@@ -185,8 +185,9 @@ while(true){
 		$ca = Gsolv("https://api-secure.solvemedia.com/papi/_challenge.js?k=5-oqQ1k7GChElaTzxRuCU4z-U5JBvnq6;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=standard;c=js,h5c,h5ct,svg,h5v,v/h264,v/ogg,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome98,os/nt,os/nt10.0,fwv/Bn0QJg.ywke2,htmlplus;am=7yM.r9qy0ZTpXi1k2rLRlA;ca=script;ts=1644721219;ct=1644721838;th=white;r=0.40659335431502686",host());
 		file_put_contents("fct.png",Gmed($ca,host()));
 		$cap = Ocr("fct.png","fc.png");
-
+		
 		if(file_exists("fct.png")){unlink("fct.png");}
+		if(file_exists("fc.png")){unlink("fc.png");}
 		//$cap = RecaptchaV2(host()."/faucet/verify",$sitekey,$apikey);
 		
 		$r2 = pfaucet($csrf,$token,$bot,$ca,$cap);
@@ -197,8 +198,9 @@ while(true){
 			echo col("Claim Left ~> ","h").col(($left-1),"k")."\n";
 			line();
 		}else{
-			echo col("Invalid Captcha","m")."\n";
-			line();
+			echo col("Invalid Captcha","m");
+			sleep(2);
+			echo "\r                \r";
 		}
 	}else{
 		echo col("Faucet habis\n","m");line();

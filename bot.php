@@ -3,7 +3,7 @@ error_reporting(0);
 $zone = json_decode(file_get_contents("http://ip-api.com/json"),1)["timezone"];if($zone){date_default_timezone_set($zone);}
 $reg = "https://bit.ly/3Lx6GS2";
 $server = "https://pastebin.com/raw/RZxwy6dr";
-$a = ["iewil","cryptonline","1.0","https://youtube.com/c/iewil"];
+$a = ["iewil","cryptonline","1.0","https://youtu.be/XK-pfZoLpOI"];
 $disable = Cl("Script mati karena web update / scam!","m")."\nSupport Channel saya dengan cara\nSubscribe ".Cl("https://www.youtube.com/c/iewil","k")."\nkarena subscribe itu gratis :D\nUntuk mendapatkan info Script terbaru\nJoin grub via telegram ~> ".Cl("https://t.me/Iewil_G","c")."\nðŸ‡®ðŸ‡© ".Cl("Family-Team-Function-INDO","b")."\n";
 
 function R($url, $httpheader = 0, $post = 0, $proxy = 0){$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);curl_setopt($ch, CURLOPT_COOKIE,TRUE);
@@ -16,7 +16,7 @@ function Sl($msg){$slow = str_split($msg);foreach( $slow as $slowmo ){echo $slow
 function Li(){$len = 36;$var = '─';echo str_repeat($var,$len)."\n";}
 function Bn(){global $server,$a,$reg;$script = file_get_contents($server);$status = explode('|',explode('#'.$a[1].':',$script)[1])[0];system('clear');$m="\033[1;31m";$p="\033[1;37m";$k="\033[1;33m";$h="\033[1;32m";$u="\033[1;35m";$b="\033[1;34m";$c="\033[1;36m";$mp="\033[101m\033[1;37m";$cl="\033[0m";$mm="\033[101m\033[1;31m";$hp="\033[1;7m";if($status == "on"){$st = $h."Online";}elseif($status == "off" or $status == null){$st = $m."Offline";}$z=trim(strtoupper($a[1]));$x=18;$y=strlen($z);$line=str_repeat('_',$x-$y);echo "\n{$m}[{$p}Script{$m}]->{$k}[".$h.$z."{$k}]-[".$h.$a[2].$k."]".$p.$line.".\n{$u}.__              .__.__ 	    {$p}| \n{$u}|__| ______  _  _|__|  |   {$st}{$u} \n|  |/ __ \ \/ \/ /  |  |\n|  \  ___/\     /|  |  |__\n|__|\___  >\/\_/ |__|____/\n        \/\n{$mm}[{$mp}▶{$mm}]{$cl} {$k}https://www.youtube.com/c/iewil\n{$c}{$hp} >_{$cl}{$b} Team-Function-INDO\n{$p}────────────────────────────────────\nLink Regist : ".$reg."\n\n";}
 function Gv($img){$content=base64_encode(file_get_contents($img));$head=["content-type: application/json"];$data=json_encode(["requests"=>[["image"=>["content"=>$content],"features"=>[["type"=>"TEXT_DETECTION"]]]]]);$r=json_decode(R("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC3y-Em42htSB8UEZPqptJ78rlvL58_h6Y",$head,$data),1);$re = $r["responses"][0]["textAnnotations"][0]["description"];$res = preg_replace('/[^A-Za-z0-9_]/', '',str_replace('Enter the following:','',$re));if($res){return $res;}else{return "iewil";}}
-function Oc($img,$img2){$apikey=Ao();$re=Gv($img);if($re=="iewil"){shell_exec('convert '.$img.' -threshold 45% -gravity North -chop x15 '.$img2.' 2>/dev/null');$h = json_decode(shell_exec('curl --silent -H "apikey:'.$apikey.'" --form "file=@'.$img2.'" --form "language=eng" --form "ocrengine=2" --form "isOverlayRequired=false" --form "iscreatesearchablepdf=false" https://api.ocr.space/Parse/Image'),1)["ParsedResults"][0]["ParsedText"];$re = strtolower(preg_replace('/[^A-Za-z0-9_]/',"", $h));if($re==""){shell_exec("tesseract ".$img2." cap -l eng --oem 3 --oem 0 --psm 4 --psm 5 --psm 6 --dpi 1000 -c tessedit_char_whitelist=abcdefghijklmnopqrstuvwxyz -c debug_file=/dev/null");$h = file_get_contents('cap.txt');$re = strtolower(preg_replace('/[^A-Za-z0-9_]/',"", $h));if(file_exists("cap.txt")){unlink("cap.txt");}}}return $re;}
+function Oc($img,$img2){$apikey=Ao();$re=Gv($img);if($re=="iewil"){shell_exec('convert '.$img.' -threshold 45% -gravity North -chop x15 '.$img2.' 2>/dev/null');$h = json_decode(shell_exec('curl --silent -H "apikey:'.$apikey.'" --form "file=@'.$img2.'" --form "language=eng" --form "ocrengine=2" --form "isOverlayRequired=false" --form "iscreatesearchablepdf=false" https://api.ocr.space/Parse/Image'),1)["ParsedResults"][0]["ParsedText"];$re = strtolower(preg_replace('/[^A-Za-z0-9_]/',"", $h));}return $re;}
 function Ao(){$a = "0123456789abcdef";$b = substr(str_shuffle($a), 0, 10);$c = $b."88957";return $c;}
 function Hd(){$ua=Sv('User_Agent');$h=["Host: api-secure.solvemedia.com","user-agent: ".$ua];return $h;}
 function Gsolv($url,$ref){$arr=["accept: */*","referer: ".$ref,"accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"];$r=R($url,array_merge(Hd(),$arr));$ca=explode('"',$r)[5];return $ca;}
@@ -164,8 +164,8 @@ while(true){
 			$ca = Gsolv($solv,host());
 			file_put_contents("img.png",Gmed($ca,host()));
 			$respon = Oc("img.png","im.png");
-			echo $respon."\n";
 			if(file_exists("img.png")){unlink("img.png");}
+			if(file_exists("mg.png")){unlink("mg.png");}
 			$data = ["adcopy_response"=>$respon,"adcopy_challenge"=>$ca,"captchaType"=>"solvemedia","csrf_token_name"=>$csrf];
 		}elseif($tipe=="recaptchav2"){
 			goto faucet;
@@ -241,7 +241,7 @@ while(true){
 	if($ss){
 		echo Cl("Success    ~> ","h").Cl($ss,"k")."\n";
 		echo Cl("Balance    ~> ","h").Cl(dash()["balance"],"k")."\n";
-		echo Cl("Energy     ~> ","h").Cl(energy(),"k")."\n";
+		echo Cl("Energy     ~> ","h").Cl(dash()["energy"],"k")."\n";
 		Li();
 	}else{
 		echo Cl("Invalid Token","m")."\n";

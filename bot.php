@@ -3,7 +3,7 @@ error_reporting(0);
 $zone = json_decode(file_get_contents("http://ip-api.com/json"),1)["timezone"];if($zone){date_default_timezone_set($zone);}
 $reg = "https://bit.ly/3Lx6GS2";
 $server = "https://pastebin.com/raw/RZxwy6dr";
-$a = ["iewil","cryptonline","1.1","https://youtu.be/Dk-v5NiFNJE"];
+$a = ["iewil","cryptonline","1.2","https://youtu.be/Dk-v5NiFNJE"];
 $disable = Cl("Script mati karena web update / scam!","m")."\nSupport Channel saya dengan cara\nSubscribe ".Cl("https://www.youtube.com/c/iewil","k")."\nkarena subscribe itu gratis :D\nUntuk mendapatkan info Script terbaru\nJoin grub via telegram ~> ".Cl("https://t.me/Iewil_G","c")."\nðŸ‡®ðŸ‡© ".Cl("Family-Team-Function-INDO","b")."\n";
 
 function R($url, $httpheader = 0, $post = 0, $proxy = 0){$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);curl_setopt($ch, CURLOPT_COOKIE,TRUE);

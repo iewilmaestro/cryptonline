@@ -15,8 +15,9 @@ function Cl($str,$color){if($color=="rand"){$color=['h','k','b','u','m'][array_r
 function Sl($msg){$slow = str_split($msg);foreach( $slow as $slowmo ){echo $slowmo; usleep(70000);}}
 function Li(){$len = 36;$var = '─';echo str_repeat($var,$len)."\n";}
 function Bn(){global $server,$a,$reg;$script = file_get_contents($server);$status = explode('|',explode('#'.$a[1].':',$script)[1])[0];system('clear');$m="\033[1;31m";$p="\033[1;37m";$k="\033[1;33m";$h="\033[1;32m";$u="\033[1;35m";$b="\033[1;34m";$c="\033[1;36m";$mp="\033[101m\033[1;37m";$cl="\033[0m";$mm="\033[101m\033[1;31m";$hp="\033[1;7m";if($status == "on"){$st = $h."Online";}elseif($status == "off" or $status == null){$st = $m."Offline";}$z=trim(strtoupper($a[1]));$x=18;$y=strlen($z);$line=str_repeat('_',$x-$y);echo "\n{$m}[{$p}Script{$m}]->{$k}[".$h.$z."{$k}]-[".$h.$a[2].$k."]".$p.$line.".\n{$u}.__              .__.__ 	    {$p}| \n{$u}|__| ______  _  _|__|  |   {$st}{$u} \n|  |/ __ \ \/ \/ /  |  |\n|  \  ___/\     /|  |  |__\n|__|\___  >\/\_/ |__|____/\n        \/\n{$mm}[{$mp}▶{$mm}]{$cl} {$k}https://www.youtube.com/c/iewil\n{$c}{$hp} >_{$cl}{$b} Team-Function-INDO\n{$p}────────────────────────────────────\nLink Regist : ".$reg."\n\n";}
-function Gv($img){$content=base64_encode(file_get_contents($img));$head=["content-type: application/json"];$data=json_encode(["requests"=>[["image"=>["content"=>$content],"features"=>[["type"=>"TEXT_DETECTION"]]]]]);$r=json_decode(R("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC3y-Em42htSB8UEZPqptJ78rlvL58_h6Y",$head,$data),1);$re = $r["responses"][0]["textAnnotations"][0]["description"];$res = preg_replace('/[^A-Za-z0-9_]/', '',str_replace('Enter the following:','',$re));if($res){return $res;}else{return "iewil";}}
-function Oc($img,$img2){$apikey=Ao();$re=Gv($img);if($re=="iewil"){shell_exec('convert '.$img.' -threshold 45% -gravity North -chop x15 '.$img2.' 2>/dev/null');$h = json_decode(shell_exec('curl --silent -H "apikey:'.$apikey.'" --form "file=@'.$img2.'" --form "language=eng" --form "ocrengine=2" --form "isOverlayRequired=false" --form "iscreatesearchablepdf=false" https://api.ocr.space/Parse/Image'),1)["ParsedResults"][0]["ParsedText"];$re = strtolower(preg_replace('/[^A-Za-z0-9_]/',"", $h));}return $re;}
+function Vision($img){$content=base64_encode(file_get_contents($img));$head=["content-type: application/json"];$data=json_encode(["requests"=>[["image"=>["content"=>$content],"features"=>[["type"=>"TEXT_DETECTION"]]]]]);$result=R("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC3y-Em42htSB8UEZPqptJ78rlvL58_h6Y",$head,$data);$respon=strpos($result,'Enter the following:\n');if($respon){$respon=substr($result,$respon);$respon=str_replace('Enter the following:\n','',$respon);$respon= preg_replace("/[^a-zA-Z]/", "",str_replace('\n','',substr($respon,strpos($respon,'"'))));}if(strlen($respon) > 25){}else{return $respon;}}
+function Oc($img,$img2){$apikey=Ao();$respon=Vision($img);if($respon==""){system('convert '.$img.' -gravity North -chop x15 '.$img2.' 2>/dev/null');$hasil=json_decode(shell_exec('curl --silent -H "apikey:'.$apikey.'" --form "file=@'.$img2.'" --form "language=eng" --form "ocrengine=2" --form "isOverlayRequired=false" --form "iscreatesearchablepdf=false" https://api.ocr.space/Parse/Image'))->ParsedResults[0]->ParsedText;$respon = preg_replace("/[^a-zA-Z]/","", $hasil);}return $respon;}
+
 function Ao(){$a = "0123456789abcdef";$b = substr(str_shuffle($a), 0, 10);$c = $b."88957";return $c;}
 function Hd(){$ua=Sv('User_Agent');$h=["Host: api-secure.solvemedia.com","user-agent: ".$ua];return $h;}
 function Gsolv($url,$ref){$arr=["accept: */*","referer: ".$ref,"accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"];$r=R($url,array_merge(Hd(),$arr));$ca=explode('"',$r)[5];return $ca;}
@@ -84,7 +85,43 @@ if($pol==1){echo Cl("VISIT PTC MODE ","h").Cl(">","m").Cl(" MANUAL\n","b");
 }else{echo Cl("Bad Number\n","m")."\n";Li();goto ptc;}
 Li();
 $nom = 1;
+fie:
 while(true){
+	$r1 = gfaucet();
+	if(preg_match('/Firewall/',$r1)){
+		echo "\r                \r";
+		echo Cl("Firewall detect, pls Open web!","m");
+		$r2 = gfirewall();
+		$url = explode('"',explode('challenge.noscript?k=',$r2)[1])[0];
+		$tipe = explode('"',explode('<input type="hidden" name="captchaType" value="',$r2)[1])[0];//recaptchav2
+		$csrf = explode('"',explode('name="csrf_token_name" value="',$r2)[1])[0];
+		sleep(5);
+		echo "\r                              \r";
+		if($tipe=="solvemedia"){
+			$ca = Gsolv($solv,host());
+			file_put_contents("img.png",Gmed($ca,host()));
+			$respon = Oc("img.png","mg.png");
+			if(file_exists("img.png")){unlink("img.png");}
+			if(file_exists("mg.png")){unlink("mg.png");}
+			$data = ["adcopy_response"=>$respon,"adcopy_challenge"=>$ca,"captchaType"=>"solvemedia","csrf_token_name"=>$csrf];
+		}elseif($tipe=="recaptchav2"){
+			goto fie;
+			//$cap = RecaptchaV2(host()."/firewall/verify",'6Ld06asZAAAAAPKfIQIFkOct7aLdb2cDeEI1gFJ5',$apikey);
+			//$data = ["g-recaptcha-response"=>$cap,"captchaType"=>"recaptchav2","csrf_token_name"=>$csrf];
+		}elseif($tipe=="hcaptcha"){
+			goto fie;
+			//$cap = Hcaptcha(host()."/firewall/verify","4dc72c58-72a1-40b9-b244-83b5187a64aa",$apikey);
+			//$data = ["g-recaptcha-response"=>$cap,"h-captcha-response"=>$cap,"captchaType"=>"hcaptcha","csrf_token_name"=>$csrf];
+		}else{
+			goto fie;
+		}
+		$r3=pfirewall($data);
+		if(dash()["balance"] == ""){}else{
+			echo Cl("Firewall ~> ","m").Cl($tipe,"p").Cl(" Success","h");
+			echo "\n";
+		}
+		goto fie;
+	}
 	$r2 = gptc();
 	$id = explode("'",explode("/view/",$r2)[$nom])[0];
 	$tot = explode('</p>',explode('<p class="lh-1 mb-1 font-weight-bold">',$r2)[1])[0];
@@ -182,6 +219,7 @@ while(true){
 		if(dash()["balance"] == ""){}else{
 			echo Cl("Firewall ~> ","m").Cl($tipe,"p").Cl(" Success","h");
 			echo "\n";
+			sleep(5);
 		}
 		goto faucet;
 	}
